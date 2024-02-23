@@ -1,6 +1,7 @@
 import mudata as md
 import pandas as pd
 import scanpy as sc
+import sys
 
 
 def _run_scanpy_test_for_target(
@@ -19,7 +20,7 @@ def _run_scanpy_test_for_target(
     adata.obs = adata.obs.assign(
         guide_status=["present" if c > 0 else "not_present" for c in targeted_cells]
     )
-    # sc.pp.log1p(mdata["gene"])
+    sc.pp.log1p(adata)
     # sc.pp.normalize_total(mdata["gene"])
     # sc.pp.regress_out(mdata["gene"], "prep_batch")
     sc.tl.rank_genes_groups(
@@ -51,7 +52,7 @@ def _run_scanpy_test_for_pairs(mdata, method="wilcoxon"):
         )
         test_results_list.append(test_results_target)
     mdata.uns["test_results"] = pd.concat(test_results_list).merge(
-        pairs_to_test, how="right"
+        pairs_to_test, how="right", on=["intended_target_name", "gene_id"]
     )
     return mdata
 
@@ -61,3 +62,7 @@ def run_scanpy_test(input_mudata_fp, output_mudata_fp, method="wilcoxon"):
     mdata_out = _run_scanpy_test_for_pairs(mdata, method=method)
     mdata_out.write(output_mudata_fp)
     return mdata_out
+
+
+if __name__ == "__main__":
+    run_scanpy_test(sys.argv[1], sys.argv[2])
