@@ -26,9 +26,25 @@ def posteriors_layer(stan_results, array, threshold=None):
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-i", "--input", required=True, type=str, help="Input MuData file")
-    parser.add_argument("-o", "--output", required=True, type=str, help="Output MuData file")
+    parser.add_argument(
+        "-i", "--input", required=True, type=str, help="Input MuData file"
+    )
+    parser.add_argument(
+        "-o", "--output", required=True, type=str, help="Output MuData file"
+    )
     parser.add_argument("-t", "--threshold", default=None, type=float)
+
+    model_group = parser.add_mutually_exclusive_group(required=True)
+    model_group.add_argument(
+        "--cleanser",
+        action="store_true",
+        help="Use CLEANSER to determine assignments",
+    )
+    model_group.add_argument(
+        "--umi",
+        action="store_true",
+        help="Use UMI threshold to determine assignments (default 5)",
+    )
     return parser.parse_args()
 
 
@@ -37,17 +53,28 @@ if __name__ == "__main__":
     gas = md.read(args.input)
     guides = gas["guide"]
     count_array = guides.X.todok()
-    counts = [(key[1], key[0], int(value)) for key, value in count_array.items()]
 
-    analysis = guides.uns.get("capture_method")
-    if analysis is None or analysis[0] == "CROP-seq":
-        model = CS_MODEL_FILE
-    elif analysis == "direct capture":
-        model = DC_MODEL_FILE
-    else:
-        raise ValueError("Invalid capture method type")
+    if args.cleanser:
+        counts = [(key[1], key[0], int(value)) for key, value in count_array.items()]
+        analysis = guides.uns.get("capture_method")
+        if analysis is None or analysis[0] == "CROP-seq":
+            model = CS_MODEL_FILE
+        elif analysis == "direct capture":
+            model = DC_MODEL_FILE
+        else:
+            raise ValueError("Invalid capture method type")
 
-    results = asyncio.run(run(counts, model))
-    posteriors = posteriors_layer(results, dok_matrix(guides.X.shape), args.threshold)
-    guides.layers["guide_assignment"] = posteriors
+        results = asyncio.run(run(counts, model))
+        posteriors = posteriors_layer(
+            results, dok_matrix(guides.X.shape), args.threshold
+        )
+        guides.layers["guide_assignment"] = posteriors
+    elif args.umi:
+        threshold = 5 if args.threshold is None else args.threshold
+        array = dok_matrix(guides.X.shape)
+        for (x, y), value in count_array.items():
+            if value >= threshold:
+                array[x, y] = 1
+        guides.layers["guide_assignment"] = array.tocsr()
+
     md.write(args.output, gas)
