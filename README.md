@@ -6,6 +6,7 @@ Welcome to this year's CRISPR Jamboree! We will be using this repository as a ce
 
 1. Access the server at http://34.135.229.230.
 2. You will be prompted for your login credentials. For your username, enter the prefix of the email you entered on [this Google Sheet](https://docs.google.com/spreadsheets/d/1u-7joOMWmFn3490ZXBTOmWGfuVvr9sy7jpJ3owXy1Zg/edit#gid=0). For example, for johndoe@gmail.com it is johndoe. You may choose any password.
+3. The sample data is located at `/mnt/shared/`.
 
 ## Setting up R (if desired)
 1. Open a terminal and run `R -e "IRkernel::installspec()"`.
