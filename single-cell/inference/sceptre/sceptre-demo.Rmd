@@ -1,0 +1,40 @@
+---
+title: "Perturb-seq inference: `sceptre`"
+author: "Gene Katsevich"
+date: "February 23, 2024"
+output: 
+  bookdown::pdf_document2:
+    toc: false
+urlcolor: blue
+---
+
+# Overview
+
+In the `sceptreIGVF` package, I have implemented a function called `inference_sceptre()`, which takes as input a `MuData` object and outputs another `MuData` object with the inference results (p-value and log fold change) added. There are currently no additional arguments to this function, and it runs `sceptre` with all default arguments. The capability to specify additional arguments will be added in the future.
+
+Here is a demo:
+
+```{r, message = FALSE, warning = FALSE}
+library(sceptreIGVF)
+library(MultiAssayExperiment)
+library(ggplot2)
+```
+
+```{r, results='hide'}
+data("mudata_inference")
+mudata_out <- inference_sceptre(mudata_inference)
+```
+
+```{r}
+metadata(mudata_out)$test_results |> 
+    as.data.frame() |> 
+    head()
+metadata(mudata_out)$test_results |> 
+    as.data.frame() |> 
+    na.omit() |>
+    ggplot(aes(x = pair_type, color = pair_type, y = p_value)) + 
+    geom_jitter() + 
+    scale_y_log10() + 
+    theme_bw() +
+    theme(legend.position = "none")
+```
