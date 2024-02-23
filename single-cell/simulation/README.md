@@ -5,7 +5,7 @@ To run the simulation engine on the jamboree cluster, install required R depende
 
 Create a personal library in your home directory using the following commands in a terminal:
 ```
-# create personal linrary directory
+# create personal library directory
 mkdir "~/R"
 
 # create .Renviron file pointing to personal library
