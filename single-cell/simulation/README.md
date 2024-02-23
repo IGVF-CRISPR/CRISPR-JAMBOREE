@@ -24,3 +24,6 @@ if (!require("BiocManager", quietly = TRUE))
 
 BiocManager::install("DESeq2")
 ```
+
+## Running an example simulation
+The `simulation_engine/run_simulation.ipynb` notebook desciribes how to run an example simulation using the scripts in `simulation_engine`.
