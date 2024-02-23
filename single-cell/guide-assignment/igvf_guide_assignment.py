@@ -41,7 +41,7 @@ def get_args():
         help="Use CLEANSER to determine assignments",
     )
     model_group.add_argument(
-        "--umi",
+        "--umi-threshold",
         action="store_true",
         help="Use UMI threshold to determine assignments (default 5)",
     )
@@ -52,10 +52,13 @@ if __name__ == "__main__":
     args = get_args()
     gas = md.read(args.input)
     guides = gas["guide"]
-    count_array = guides.X.todok()
+    guide_count_array = guides.X.todok()
 
     if args.cleanser:
-        counts = [(key[1], key[0], int(value)) for key, value in count_array.items()]
+        counts = [
+            (key[1], key[0], int(guide_count))
+            for key, guide_count in guide_count_array.items()
+        ]
         analysis = guides.uns.get("capture_method")
         if analysis is None or analysis[0] == "CROP-seq":
             model = CS_MODEL_FILE
@@ -68,13 +71,14 @@ if __name__ == "__main__":
         posteriors = posteriors_layer(
             results, dok_matrix(guides.X.shape), args.threshold
         )
-        guides.layers["guide_assignment"] = posteriors
-    elif args.umi:
+    elif args.umi_threshold:
         threshold = 5 if args.threshold is None else args.threshold
         array = dok_matrix(guides.X.shape)
-        for (x, y), value in count_array.items():
-            if value >= threshold:
+        for (x, y), guide_count in guide_count_array.items():
+            if guide_count >= threshold:
                 array[x, y] = 1
-        guides.layers["guide_assignment"] = array.tocsr()
+        posteriors = array.tocsr()
+
+    guides.layers["guide_assignment"] = posteriors
 
     md.write(args.output, gas)
