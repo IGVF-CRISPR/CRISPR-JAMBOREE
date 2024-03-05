@@ -1,0 +1,78 @@
+---
+title: "Perturb-seq inference: `sceptre`"
+author: "Gene Katsevich"
+date: "March 5, 2024"
+output: 
+  bookdown::pdf_document2:
+    toc: false
+urlcolor: blue
+---
+
+# Overview
+
+In the `sceptreIGVF` package, I have implemented a function called `inference_sceptre()`, which takes as input a `MuData` object and optional additional analysis parameters and outputs another `MuData` object with the inference results (p-value and log fold change) added.
+
+Below are demonstrations of using `inference_sceptre()` with all default arguments and with some additional arguments.
+
+```{r, message = FALSE, warning = FALSE}
+library(sceptreIGVF)
+library(MultiAssayExperiment)
+library(ggplot2)
+data("mudata_inference")      # this is the Gasperini subset
+```
+
+# Default arguments
+
+```{r, results='hide'}
+mudata_out <- inference_sceptre(mudata_inference)
+```
+
+```{r}
+metadata(mudata_out)$test_results |> 
+    as.data.frame() |> 
+    head()
+metadata(mudata_out)$test_results |> 
+    as.data.frame() |> 
+    na.omit() |>
+    ggplot(aes(x = pair_type, color = pair_type, y = p_value)) + 
+    geom_jitter() + 
+    scale_y_log10() + 
+    theme_bw() +
+    theme(legend.position = "none")
+```
+
+# Optional arguments
+
+`sceptre` has several optional arguments that can be used to customize the analysis, including the following:
+
+- `side`: The sidedness of the test
+- `grna_integration_strategy`: The strategy for integrating information across gRNAs with the same target
+- `formula_object`: The formula object to use for the negative binomial model
+- `fit_parametric_curve`: Whether to fit a parametric curve to the data for computational speed
+- `control_group`: Which set of cells to use to contrast with cells having a perturbation of interest
+- `resampling_mechanism`: Whether to use conditional randomization or permutations
+
+These arguments are documented in detail in the [sceptre manual](https://timothy-barry.github.io/sceptre-book/set-analysis-parameters.html). While all of these arguments have sensible defaults, users might want to customize the analysis by changing one or more of them. Any of the above arguments can be specified to `inference_sceptre()` as named arguments. Below is an example:
+
+```{r, results='hide'}
+# let's run a left-sided test, with a different formula:
+mudata_out <- inference_sceptre(
+  mudata_inference,
+  side = "left",
+  formula_object = formula(~ prep_batch + log(response_n_nonzero) + log(response_n_umis))
+)
+```
+
+```{r}
+metadata(mudata_out)$test_results |> 
+    as.data.frame() |> 
+    head()
+metadata(mudata_out)$test_results |> 
+    as.data.frame() |> 
+    na.omit() |>
+    ggplot(aes(x = pair_type, color = pair_type, y = p_value)) + 
+    geom_jitter() + 
+    scale_y_log10() + 
+    theme_bw() +
+    theme(legend.position = "none")
+```
