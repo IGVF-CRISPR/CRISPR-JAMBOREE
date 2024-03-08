@@ -5,7 +5,6 @@
 #'
 #' @return This function is called for its side effect of writing the output MuData.
 # TODO: confirm that Low MOI and high MOI case are the same for negative binomial
-# TODO: update code to compute scaling factors for minimal case as well
 perform_negbinom_regression <- function(mudata_input_fp, mudata_output_fp) {
     
   # read in input mudata
@@ -19,11 +18,28 @@ perform_negbinom_regression <- function(mudata_input_fp, mudata_output_fp) {
   }
   SummarizedExperiment::assayNames(mudata[['guide']])[[1]] <- 'counts'
 
+  # get MOI
+  moi <- MultiAssayExperiment::metadata(mudata[["guide"]])$moi
+
+  # In low-MOI case, extract control cells as those containing an NT gRNA
+  if (moi == "low") {
+    non_targeting_guides <- SummarizedExperiment::rowData(mudata[["guide"]]) |>
+      as.data.frame() |>
+      dplyr::filter(targeting == "FALSE") |>
+      rownames()
+    nt_grna_presence <- SummarizedExperiment::assay(
+      mudata[["guide"]],
+      "guide_assignment"
+    )[non_targeting_guides, ] |>
+      apply(MARGIN = 2, FUN = max)
+    control_cells <- names(nt_grna_presence)[nt_grna_presence == 1]
+  }
+
   # Extract pairs to test
   pairs_to_test <- MultiAssayExperiment::metadata(mudata)$pairs_to_test |> 
     as.data.frame()
 
-  # Initialize test results data frame based on pairs_to_test (add p-values)
+  # Initialize test results data frame based on pairs_to_test
   test_results <- pairs_to_test |>
     dplyr::mutate(p_value = NA_real_, l2fc = NA_real_)
     
@@ -39,11 +55,14 @@ perform_negbinom_regression <- function(mudata_input_fp, mudata_output_fp) {
       as.data.frame() |>
     dplyr::filter(intended_target_name == !!intended_target_name) |>
       rownames()
-    element_targeted <- assay(
+    element_targeted <- SummarizedExperiment::assay(
       mudata[["guide"]],
       "guide_assignment"
     )[grnas_targeting_element, ] |>
       apply(MARGIN = 2, FUN = max)
+    
+    # define treatment cells for low MOI case
+    treatment_cells <- names(element_targeted)[element_targeted == 1]
 
     # get gene expression for gene of interest
     gene_expression = SummarizedExperiment::assay(
@@ -51,13 +70,20 @@ perform_negbinom_regression <- function(mudata_input_fp, mudata_output_fp) {
       "counts"
     )[gene_id, ]
 
-    # get total gene expression for each cell (will not work with minimal case)
+    # get total gene expression for each cell
     umis_per_cell <- SummarizedExperiment::colData(mudata[["gene"]])
     umis_per_cell <- umis_per_cell[, 'total_gene_umis']
         
     # create modeling data frame
     model_df <- data.frame(cbind(element_targeted, gene_expression, umis_per_cell))
 
+    # subset cells in low MOI case - cells with guide and NT guide
+    if (moi == "low") {
+      model_df <- model_df[c(control_cells, treatment_cells), ]
+    }
+
+    print(dim(model_df))
+    
     # run negative binomial regression
     mdl <- MASS::glm.nb(gene_expression ~ element_targeted + offset(log(umis_per_cell)), model_df)
 
