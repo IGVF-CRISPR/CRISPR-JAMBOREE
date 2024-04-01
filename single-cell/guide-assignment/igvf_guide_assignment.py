@@ -1,11 +1,12 @@
 import argparse
 import asyncio
+import unittest
 
 import mudata as md
 import numpy as np
+from cleanser import CS_MODEL_FILE, DC_MODEL_FILE
+from cleanser import run as run_cleanser
 from scipy.sparse import dok_matrix
-
-from cleanser import CS_MODEL_FILE, DC_MODEL_FILE, run
 
 
 def posteriors_layer(stan_results, array, threshold=None):
@@ -21,6 +22,34 @@ def posteriors_layer(stan_results, array, threshold=None):
                 if np.median(pzi[i]) >= threshold:
                     array[cell_id, guide_id] = 1
 
+    return array.tocsr()
+
+
+def cleanser_posteriors(guides, threshold):
+    guide_count_array = guides.X.todok()
+    counts = [
+        (key[1], key[0], int(guide_count))
+        for key, guide_count in guide_count_array.items()
+    ]
+    analysis = guides.uns.get("capture_method")
+    if analysis is None or analysis[0] == "CROP-seq":
+        model = CS_MODEL_FILE
+    elif analysis == "direct capture":
+        model = DC_MODEL_FILE
+    else:
+        raise ValueError("Invalid capture method type")
+
+    results = asyncio.run(run_cleanser(counts, model))
+    return posteriors_layer(results, dok_matrix(guides.X.shape), threshold)
+
+
+def threshold_posteriors(guides, threshold):
+    guide_count_array = guides.X.todok()
+    threshold = 5 if threshold is None else threshold
+    array = dok_matrix(guides.X.shape)
+    for (x, y), guide_count in guide_count_array.items():
+        if guide_count >= threshold:
+            array[x, y] = 1
     return array.tocsr()
 
 
@@ -48,37 +77,124 @@ def get_args():
     return parser.parse_args()
 
 
-if __name__ == "__main__":
-    args = get_args()
-    gas = md.read(args.input)
+def run(gas, cleanser, umi_threshold, threshold):
     guides = gas["guide"]
-    guide_count_array = guides.X.todok()
 
-    if args.cleanser:
-        counts = [
-            (key[1], key[0], int(guide_count))
-            for key, guide_count in guide_count_array.items()
-        ]
-        analysis = guides.uns.get("capture_method")
-        if analysis is None or analysis[0] == "CROP-seq":
-            model = CS_MODEL_FILE
-        elif analysis == "direct capture":
-            model = DC_MODEL_FILE
-        else:
-            raise ValueError("Invalid capture method type")
-
-        results = asyncio.run(run(counts, model))
-        posteriors = posteriors_layer(
-            results, dok_matrix(guides.X.shape), args.threshold
-        )
-    elif args.umi_threshold:
-        threshold = 5 if args.threshold is None else args.threshold
-        array = dok_matrix(guides.X.shape)
-        for (x, y), guide_count in guide_count_array.items():
-            if guide_count >= threshold:
-                array[x, y] = 1
-        posteriors = array.tocsr()
+    if cleanser:
+        posteriors = cleanser_posteriors(guides, threshold)
+    elif umi_threshold:
+        posteriors = threshold_posteriors(guides, threshold)
 
     guides.layers["guide_assignment"] = posteriors
 
-    md.write(args.output, gas)
+
+if __name__ == "__main__":
+    args = get_args()
+    mu_input = md.read(args.input)
+    run(mu_input, args.cleanser, args.umi_threshold, args.threshold)
+    md.write(args.output, mu_input)
+
+
+####################################
+#              Tests               #
+####################################
+
+
+class TestCleanser(unittest.TestCase):
+    """Test guide assignment using basic thresholding"""
+
+    def test_cropseq_threshold_values(self):
+        """Ensure all the values in the guide_assignment layer are 1.0. It's a sparse matrix so any locations without values
+        are implicitly 0.0"""
+
+        gas = md.read("test_data/gasperini_guide_assignment_input_minimal.h5mu")
+        guides = gas["guide"]
+
+        self.assertEqual("CROP-seq", guides.uns.get("capture_method"))
+
+        run(gas, cleanser=True, umi_threshold=False, threshold=0.8)
+        self.assertIn("guide_assignment", guides.layers)
+        assignments = guides.layers[
+            "guide_assignment"
+        ].tocoo()  # Must be in COO format to iterate overvalues
+        for value in assignments.data:
+            self.assertEqual(value, 1.0)
+
+    def test_cropseq_probability_values(self):
+        """Ensure all the values in the guide_assignment layer are > 0.0. It's a sparse matrix so any locations without values
+        are implicitly 0.0"""
+
+        gas = md.read("test_data/gasperini_guide_assignment_input_minimal.h5mu")
+        guides = gas["guide"]
+
+        self.assertEqual("CROP-seq", guides.uns.get("capture_method"))
+
+        run(gas, cleanser=True, umi_threshold=False, threshold=None)
+        self.assertIn("guide_assignment", guides.layers)
+        assignments = guides.layers[
+            "guide_assignment"
+        ].tocoo()  # Must be in COO format to iterate overvalues
+
+        # All values are > 0
+        for value in assignments.data:
+            self.assertGreater(value, 0.0)
+
+        # Not all values are == 1.0
+        self.assertFalse(all([d == 1.0 for d in assignments.data]))
+
+    def test_dc_threshold_values(self):
+        """Ensure all the values in the guide_assignment layer are 1.0. It's a sparse matrix so any locations without values
+        are implicitly 0.0"""
+
+        gas = md.read("test_data/papalexi_guide_assignment_input.h5mu")
+        guides = gas["guide"]
+
+        self.assertEqual("direct capture", guides.uns.get("capture_method"))
+
+        run(gas, cleanser=True, umi_threshold=False, threshold=0.8)
+        self.assertIn("guide_assignment", guides.layers)
+        assignments = guides.layers[
+            "guide_assignment"
+        ].tocoo()  # Must be in COO format to iterate overvalues
+        for value in assignments.data:
+            self.assertEqual(value, 1.0)
+
+    def test_dc_probability_values(self):
+        """Ensure all the values in the guide_assignment layer are > 0.0. It's a sparse matrix so any locations without values
+        are implicitly 0.0"""
+
+        gas = md.read("test_data/papalexi_guide_assignment_input.h5mu")
+        guides = gas["guide"]
+
+        self.assertEqual("direct capture", guides.uns.get("capture_method"))
+
+        run(gas, cleanser=True, umi_threshold=False, threshold=None)
+        self.assertIn("guide_assignment", guides.layers)
+        assignments = guides.layers[
+            "guide_assignment"
+        ].tocoo()  # Must be in COO format to iterate overvalues
+
+        # All values are > 0
+        for value in assignments.data:
+            self.assertGreater(value, 0.0)
+
+        # Not all values are == 1.0
+        self.assertFalse(all([d == 1.0 for d in assignments.data]))
+
+
+class TestThreshold(unittest.TestCase):
+    """Test guide assignment using basic thresholding"""
+
+    def test_layer_values(self):
+        """Ensure all the values in the guide_assignment layer are 1.0. It's a sparse matrix so any locations without values
+        are implicitly 0.0"""
+
+        gas = md.read("test_data/gasperini_guide_assignment_input_minimal.h5mu")
+        run(gas, cleanser=False, umi_threshold=True, threshold=5)
+        guides = gas["guide"]
+        self.assertIn("guide_assignment", guides.layers)
+        assignments = guides.layers[
+            "guide_assignment"
+        ].tocoo()  # Must be in COO format to iterate overvalues
+        for value in assignments.data:
+            self.assertEqual(value, 1.0)
