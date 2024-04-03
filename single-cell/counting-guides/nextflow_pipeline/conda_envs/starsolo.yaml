@@ -1,0 +1,14 @@
+name: starsolo
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - star=2.7.11b
+  - pandas=2.2.1
+  - bed2gtf=1.9.1
+  - anndata=0.10.6
+  - muon=0.1.5
+  - pip
+  - pip:
+    - openpyxl==3.1.2
