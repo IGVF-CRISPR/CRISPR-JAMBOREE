@@ -1,6 +1,6 @@
 
 ## Runing our starSolo nextflow module to count guides
-
+This workflow will receive the whitelist, fastq and metadata and generate and anndata (cells x guides) using starSolo.s
 
 ```bash
 #iNSTALL CONDA
