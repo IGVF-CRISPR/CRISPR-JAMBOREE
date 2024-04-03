@@ -53,7 +53,7 @@ A directory with your data. The input.config file should point to the pathway of
  Document with the parameters being passed as input for your nextflow module
 
 ### main.nf
-Your module workflow
+Your module workflow. You should import your processes here and structure the execution sequence
 
 
 
