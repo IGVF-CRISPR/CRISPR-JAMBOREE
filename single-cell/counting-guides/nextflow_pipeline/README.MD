@@ -1,14 +1,14 @@
 
+## Runing our starSolo nextflow module to count guides
 
 
-#this is to speedup the conda solver
 ```bash
 #iNSTALL CONDA
 conda update -n base conda -y 
 conda install -n base conda-libmamba-solver -y
 conda config --set solver libmamba #this make conda very fast
 #install nextflow
-conda install bioconda::nextflow
+conda install bioconda::nextflowå
 
 ```
 
