@@ -1,5 +1,5 @@
 
-# Runing our starSolo nextflow module to count guides
+# Runing  starSolo nextflow module to count guides
 This workflow will receive the whitelist, fastq and metadata and generate as output an AnnData (cells x guides) file using starSolo.
 
 ```bash
