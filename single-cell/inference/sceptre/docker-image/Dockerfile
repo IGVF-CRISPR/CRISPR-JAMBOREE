@@ -4,7 +4,7 @@ FROM ubuntu:20.04
 # Set DEBIAN_FRONTEND to noninteractive to skip any interactive post-install configuration steps.
 ENV DEBIAN_FRONTEND noninteractive
 
-# Install R
+# System dependencies
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     gnupg2 \
