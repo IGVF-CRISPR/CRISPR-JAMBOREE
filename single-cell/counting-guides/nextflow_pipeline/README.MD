@@ -32,6 +32,16 @@ nextflow main.nf -config input.config -resume
 
 
 ```
+## Inputs
+
+
+- GUIDES_METADATA
+- FASTQ_FILES_GUIDES
+- WHITELIST 
+
+## Outputs
+-   guides_star_solo.h5ad
+
 
 ## Directory structure:
 
