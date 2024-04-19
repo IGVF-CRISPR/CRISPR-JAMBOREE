@@ -1,6 +1,6 @@
 # `sceptre` guide assignment Nextflow process
 
-The file `main.nf` defines the Nextflow process `guide_assignment_sceptre`, which can be integrated into the IGVF pipeline.
+The file `processes/guide_assignment_sceptre.nf` defines the Nextflow process `guide_assignment_sceptre`, which can be integrated into the IGVF pipeline.
 
 ## Docker image
 

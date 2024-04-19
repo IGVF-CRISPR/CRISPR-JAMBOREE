@@ -1,10 +1,10 @@
 # `sceptre` inference Nextflow process
 
-The file `main.nf` defines the Nextflow process `inference_sceptre`, which can be integrated into the IGVF pipeline.
+The file `processes/inference_sceptre.nf` defines the Nextflow process `inference_sceptre`, which can be integrated into the IGVF pipeline.
 
 ## Docker image
 
-The process uses the Docker image [ekatsevi/sceptre-igvf:v0.1](https://hub.docker.com/r/ekatsevi/sceptre-igvf/tags).
+The process uses the Docker image [ekatsevi/sceptre-igvf:v0.1](https://hub.docker.com/r/ekatsevi/sceptre-igvf/tags), built using the Dockerfile at `docker/Dockerfile`.
 
 ## Inputs
 
