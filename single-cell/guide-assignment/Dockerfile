@@ -16,7 +16,7 @@ RUN Rscript -e 'install.packages("dplyr", repos = "http://cran.us.r-project.org"
     Rscript -e 'install.packages("ggplot", repos = "http://cran.us.r-project.org")'; Rscript -e 'install.packages("scales", repos = "http://cran.us.r-project.org")'; \
     Rscript -e 'install.packages("ondisc", repos = "http://cran.us.r-project.org")'; Rscript -e 'install.packages("data.table", repos = "http://cran.us.r-project.org")'; \
     Rscript -e 'install.packages("purrr", repos = "http://cran.us.r-project.org")'
-RUN Rscript -e 'install.packages("BiocManager", repos = "http://cran.us.r-project.org")'
+RUN Rscript -e 'install.packages("BiocManager", repos = "http://cran.us.r-project.org")'; Rscript -e 'BiocManager::install(version = "3.18")'
 RUN Rscript -e 'install.packages("remotes", repos = "http://cran.us.r-project.org")'
 RUN Rscript -e 'BiocManager::install("MultiAssayExperiment")'; Rscript -e 'BiocManager::install("SingleCellExperiment")'; Rscript -e 'BiocManager::install("SummarizedExperiment")';
 RUN Rscript -e 'remotes::install_github("grimbough/rhdf5@537cd703a3a27683f3e5224ead62d00972d426d6")'; Rscript -e 'remotes::install_github("ilia-kats/MuData@4f4f4aeffc83343ed4d15c3db8cda44684306688")'
