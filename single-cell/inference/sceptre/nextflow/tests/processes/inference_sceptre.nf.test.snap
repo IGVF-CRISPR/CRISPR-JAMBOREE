@@ -98,42 +98,6 @@
         },
         "timestamp": "2024-05-08T20:21:20.284628"
     },
-    "Should run without failures": {
-        "content": [
-            {
-                "stderr": [
-                    
-                ],
-                "errorReport": null,
-                "exitStatus": 0,
-                "out": {
-                    "0": [
-                        "mudata_out.h5mu:md5,bc822ba039e7351c8d48948bfecf9db3"
-                    ],
-                    "mudata_out_ch": [
-                        "mudata_out.h5mu:md5,bc822ba039e7351c8d48948bfecf9db3"
-                    ]
-                },
-                "failed": false,
-                "stdout": [
-                    
-                ],
-                "errorMessage": null,
-                "trace": {
-                    "tasksFailed": 0,
-                    "tasksCount": 1,
-                    "tasksSucceeded": 1
-                },
-                "name": "inference_sceptre",
-                "success": true
-            }
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-05-08T16:45:48.421664"
-    },
     "inference_sceptre on Papalexi data with default parameters": {
         "content": [
             {
