@@ -1,0 +1,110 @@
+nextflow_process {
+
+    name "Test Process inference_sceptre"
+    script "processes/inference_sceptre.nf"
+    process "inference_sceptre"
+
+    test("inference_sceptre on Gasperini data with default parameters") {
+
+        when {
+            params {
+                side = "both"
+                grna_integration_strategy = "union"
+                resampling_approximation = "skew_normal"
+                control_group = "default"
+                resampling_mechanism = "default"
+                formula_object = "default"
+            }
+            process {
+                """
+                input[0] = file("${projectDir}/data/gasperini_inference_input.h5mu")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process).match() }
+            )
+        }
+    }
+
+    test("inference_sceptre on Gasperini data with alternative parameters") {
+
+        when {
+            params {
+                side = "left" // different side
+                grna_integration_strategy = "union"
+                resampling_approximation = "skew_normal"
+                control_group = "default"
+                resampling_mechanism = "default"
+                formula_object = "~ prep_batch + log(response_n_nonzero) + log(response_n_umis)" // different formula object
+            }
+            process {
+                """
+                input[0] = file("${projectDir}/data/gasperini_inference_input.h5mu")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process).match() }
+            )
+        }
+    }
+
+    test("inference_sceptre on Papalexi data with default parameters") {
+
+        when {
+            params {
+                side = "both"
+                grna_integration_strategy = "union"
+                resampling_approximation = "skew_normal"
+                control_group = "default"
+                resampling_mechanism = "default"
+                formula_object = "default"
+            }
+            process {
+                """
+                input[0] = file("${projectDir}/data/papalexi_inference_input.h5mu")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process).match() }
+            )
+        }
+    }
+
+    test("inference_sceptre on Papalexi data with alternative parameters") {
+
+        when {
+            params {
+                side = "both" 
+                grna_integration_strategy = "union"
+                resampling_approximation = "skew_normal"
+                control_group = "complement" // different control group
+                resampling_mechanism = "default"
+                formula_object = "~ replicate + log(response_n_nonzero) + log(response_n_umis)" // different formula object
+            }
+            process {
+                """
+                input[0] = file("${projectDir}/data/papalexi_inference_input.h5mu")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process).match() }
+            )
+        }
+    }
+}

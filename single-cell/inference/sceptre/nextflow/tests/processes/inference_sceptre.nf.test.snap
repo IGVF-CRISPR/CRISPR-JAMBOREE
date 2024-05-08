@@ -1,0 +1,182 @@
+{
+    "inference_sceptre on Gasperini data with alternative parameters": {
+        "content": [
+            {
+                "stderr": [
+                    
+                ],
+                "errorReport": null,
+                "exitStatus": 0,
+                "out": {
+                    "0": [
+                        "mudata_out.h5mu:md5,62e543c78bd77233dea833daea62b33a"
+                    ],
+                    "mudata_out_ch": [
+                        "mudata_out.h5mu:md5,62e543c78bd77233dea833daea62b33a"
+                    ]
+                },
+                "failed": false,
+                "stdout": [
+                    
+                ],
+                "errorMessage": null,
+                "trace": {
+                    "tasksFailed": 0,
+                    "tasksCount": 1,
+                    "tasksSucceeded": 1
+                },
+                "name": "inference_sceptre",
+                "success": true
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-05-08T16:52:35.754144"
+    },
+    "inference_sceptre on Gasperini data with default parameters": {
+        "content": [
+            {
+                "stderr": [
+                    
+                ],
+                "errorReport": null,
+                "exitStatus": 0,
+                "out": {
+                    "0": [
+                        "mudata_out.h5mu:md5,bc822ba039e7351c8d48948bfecf9db3"
+                    ],
+                    "mudata_out_ch": [
+                        "mudata_out.h5mu:md5,bc822ba039e7351c8d48948bfecf9db3"
+                    ]
+                },
+                "failed": false,
+                "stdout": [
+                    
+                ],
+                "errorMessage": null,
+                "trace": {
+                    "tasksFailed": 0,
+                    "tasksCount": 1,
+                    "tasksSucceeded": 1
+                },
+                "name": "inference_sceptre",
+                "success": true
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-05-08T16:52:10.81045"
+    },
+    "inference_sceptre on Papalexi data with alternative parameters": {
+        "content": [
+            {
+                "stderr": [
+                    
+                ],
+                "errorReport": null,
+                "exitStatus": 0,
+                "out": {
+                    "0": [
+                        "mudata_out.h5mu:md5,41d38eed035c988c568d65c8f635e5f7"
+                    ],
+                    "mudata_out_ch": [
+                        "mudata_out.h5mu:md5,41d38eed035c988c568d65c8f635e5f7"
+                    ]
+                },
+                "failed": false,
+                "stdout": [
+                    
+                ],
+                "errorMessage": null,
+                "trace": {
+                    "tasksFailed": 0,
+                    "tasksCount": 1,
+                    "tasksSucceeded": 1
+                },
+                "name": "inference_sceptre",
+                "success": true
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-05-08T16:58:11.211088"
+    },
+    "Should run without failures": {
+        "content": [
+            {
+                "stderr": [
+                    
+                ],
+                "errorReport": null,
+                "exitStatus": 0,
+                "out": {
+                    "0": [
+                        "mudata_out.h5mu:md5,bc822ba039e7351c8d48948bfecf9db3"
+                    ],
+                    "mudata_out_ch": [
+                        "mudata_out.h5mu:md5,bc822ba039e7351c8d48948bfecf9db3"
+                    ]
+                },
+                "failed": false,
+                "stdout": [
+                    
+                ],
+                "errorMessage": null,
+                "trace": {
+                    "tasksFailed": 0,
+                    "tasksCount": 1,
+                    "tasksSucceeded": 1
+                },
+                "name": "inference_sceptre",
+                "success": true
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-05-08T16:45:48.421664"
+    },
+    "inference_sceptre on Papalexi data with default parameters": {
+        "content": [
+            {
+                "stderr": [
+                    
+                ],
+                "errorReport": null,
+                "exitStatus": 0,
+                "out": {
+                    "0": [
+                        "mudata_out.h5mu:md5,10aac044be7f8d301434b1dd1d3db572"
+                    ],
+                    "mudata_out_ch": [
+                        "mudata_out.h5mu:md5,10aac044be7f8d301434b1dd1d3db572"
+                    ]
+                },
+                "failed": false,
+                "stdout": [
+                    
+                ],
+                "errorMessage": null,
+                "trace": {
+                    "tasksFailed": 0,
+                    "tasksCount": 1,
+                    "tasksSucceeded": 1
+                },
+                "name": "inference_sceptre",
+                "success": true
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-05-08T16:57:49.089015"
+    }
+}
