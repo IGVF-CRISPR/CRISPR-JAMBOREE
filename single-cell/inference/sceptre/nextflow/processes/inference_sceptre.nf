@@ -1,5 +1,5 @@
 process inference_sceptre {
-    container 'igvf/sceptre-igvf:v0.1'
+    container 'igvf/sceptre-igvf:v0.2'
 
     input:
     path mudata_fp
