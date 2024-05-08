@@ -1,0 +1,46 @@
+nextflow_process {
+
+    name "Test Process guide_assignment_sceptre"
+    script "processes/guide_assignment_sceptre.nf"
+    process "guide_assignment_sceptre"
+
+    test("guide_assignment_sceptre on Gasperini data") {
+
+        when {
+            params {
+            }
+            process {
+                """
+                input[0] = file("${projectDir}/data/gasperini_guide_assignment_input.h5mu")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process).match() }
+            )
+        }
+    }
+
+    test("guide_assignment_sceptre on Papalexi data") {
+
+        when {
+            params {
+            }
+            process {
+                """
+                input[0] = file("${projectDir}/data/papalexi_guide_assignment_input.h5mu")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process).match() }
+            )
+        }
+    }
+}
