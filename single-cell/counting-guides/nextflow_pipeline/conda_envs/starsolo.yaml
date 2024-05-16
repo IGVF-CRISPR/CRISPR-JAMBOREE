@@ -6,7 +6,7 @@ channels:
 dependencies:
   - star=2.7.11b
   - pandas=2.2.1
-  - bed2gtf=1.9.1
+  - bed2gtf=1.9.2
   - anndata=0.10.6
   - muon=0.1.5
   - pip

@@ -1,7 +1,9 @@
 
 process starSoloGuide {
+    conda 'conda_envs/starsolo.yaml'
+
     cache 'lenient'
-    cpus 5
+    cpus 4
 
 
     input:
