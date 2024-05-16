@@ -17,7 +17,8 @@ conda install bioconda::nextflow
 ```bash
 
 #unzip the  data sample
-tar -xvzf example_data/data.tar.gz
+cd CRISPR-JAMBOREE/single-cell/counting-guides/nextflow_pipeline/example_data  
+tar -xvzf -k data.tar.gz
 #This data is very small should be doable running in your desktop or small server
 ```
 
