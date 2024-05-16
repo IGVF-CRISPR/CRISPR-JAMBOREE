@@ -15,9 +15,10 @@ nextflow_pipeline {
 
         then {
             assert workflow.success
-            assert snapshot(workflow.out.guides_anndata_starsolo.match()) 
+            assert snapshot (path("$outputDir/guides_star_solo.h5ad"))
             }
         }
 
     }
+
 
