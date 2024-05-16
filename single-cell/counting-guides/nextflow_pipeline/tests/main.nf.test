@@ -4,20 +4,20 @@ nextflow_pipeline {
     script "main.nf"
     profile  "conda"
     test("Should run without failures") {
-
         when {
             params {
               GUIDES_METADATA =  '/content/CRISPR-JAMBOREE/single-cell/counting-guides/nextflow_pipeline/example_data/data/GUIDE_LIFTED_OVERHG38_YANHUA.xlsx' 
               FASTQ_FILES_GUIDES = ['/content/CRISPR-JAMBOREE/single-cell/counting-guides/nextflow_pipeline/example_data/data/test_R1_001.fastq', '/content/CRISPR-JAMBOREE/single-cell/counting-guides/nextflow_pipeline/example_data/data/test_R2_001.fastq']
               WHITELIST = '/content/CRISPR-JAMBOREE/single-cell/counting-guides/nextflow_pipeline/example_data/data/3M-february-2018.txt'
-              outdir = "tests/results"
+              outdir = "$outputDir"
             }
         }
 
         then {
             assert workflow.success
+            assert snapshot(workflow.out.guides_anndata_starsolo.match()) 
+            }
         }
 
     }
 
-}
