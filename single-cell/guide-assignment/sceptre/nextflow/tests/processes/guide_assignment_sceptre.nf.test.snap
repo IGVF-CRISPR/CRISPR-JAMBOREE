@@ -1,0 +1,68 @@
+{
+    "guide_assignment_sceptre on Gasperini data": {
+        "content": [
+            {
+                "stderr": [
+                    
+                ],
+                "errorReport": null,
+                "exitStatus": 0,
+                "out": {
+                    "0": [
+                        "mudata_out.h5mu:md5,55b5053a0d9e82d3ff90e4f00738e0c4"
+                    ]
+                },
+                "failed": false,
+                "stdout": [
+                    
+                ],
+                "errorMessage": null,
+                "trace": {
+                    "tasksFailed": 0,
+                    "tasksCount": 1,
+                    "tasksSucceeded": 1
+                },
+                "name": "guide_assignment_sceptre",
+                "success": true
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-05-08T17:10:30.843387"
+    },
+    "guide_assignment_sceptre on Papalexi data": {
+        "content": [
+            {
+                "stderr": [
+                    
+                ],
+                "errorReport": null,
+                "exitStatus": 0,
+                "out": {
+                    "0": [
+                        "mudata_out.h5mu:md5,00ccc18f103a33a6ffeaf40d292dbc00"
+                    ]
+                },
+                "failed": false,
+                "stdout": [
+                    
+                ],
+                "errorMessage": null,
+                "trace": {
+                    "tasksFailed": 0,
+                    "tasksCount": 1,
+                    "tasksSucceeded": 1
+                },
+                "name": "guide_assignment_sceptre",
+                "success": true
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-05-08T17:13:16.894199"
+    }
+}
