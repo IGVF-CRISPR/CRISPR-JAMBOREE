@@ -1,6 +1,6 @@
 
 process soloOutGuideParsing {
-        conda 'conda_envs/starsolo.yaml'
+        conda "${moduleDir}/conda_envs/starsolo.yaml"
         input: 
             val SOLO_OUT_DIR_IN
             val METADATA_IN 

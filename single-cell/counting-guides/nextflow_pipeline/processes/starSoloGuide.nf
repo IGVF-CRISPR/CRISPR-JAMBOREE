@@ -1,6 +1,6 @@
 
 process starSoloGuide {
-    conda 'conda_envs/starsolo.yaml'
+    conda "${moduleDir}/conda_envs/starsolo.yaml"
 
     cache 'lenient'
     cpus 2

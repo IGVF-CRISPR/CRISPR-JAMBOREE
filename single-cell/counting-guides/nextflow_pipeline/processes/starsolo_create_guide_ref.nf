@@ -1,6 +1,6 @@
 
 process starsolo_create_guide_ref {
-        conda 'conda_envs/starsolo.yaml'
+        conda "${moduleDir}/conda_envs/starsolo.yaml"
         input: 
             val pseudo_genome_in
             val guides_gtf_in 

@@ -11,6 +11,7 @@ conda install -n base conda-libmamba-solver -y
 conda config --set solver libmamba #this make conda very fast
 #install nextflow
 conda install bioconda::nextflow
+conda install bioconda::nf-test
 
 ```
 
