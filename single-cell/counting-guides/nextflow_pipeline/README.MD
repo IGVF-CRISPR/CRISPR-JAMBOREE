@@ -98,3 +98,16 @@ conda install bioconda::nextflow
 
 
 
+
+# colab dev
+```
+Not sync files automatically, maybe try to use the credentials
+https://colab.research.google.com/drive/1912kfEnMOtJ4Ya185nZqR0r-zCX4_Tlm?usp=sharing
+
+
+```
+
+
+
+
+
