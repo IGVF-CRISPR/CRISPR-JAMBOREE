@@ -1,31 +1,6 @@
-process cleanser {
-        input:
-            path mudata_input
-            path mudata_output
-            val method
-            val threshold
-        output:
-            path mudata_output
+include { guide_assignment_cleanser } from '../cleanser/nextflow/guide_assignment_cleanser.nf'
+include { guide_assignment_sceptre } from '../sceptre/nextflow/processes/guide_assignment_sceptre.nf'
 
-        script:
-            def thresh_opt = threshold ? "-t ${threshold}" : ""
-           """
-              python ${baseDir}/bin/igvf_guide_assignment.py  -i ${mudata_input} -o ${mudata_output} ${thresh_opt} --${method}
-           """
-}
-
-process sceptre {
-    input:
-        path mudata_input
-        path mudata_output
-    output:
-        path mudata_output
-
-    script:
-        """
-            Rscript ${baseDir}/bin/sceptre_grna_assignment.R ${mudata_input} ${mudata_output}
-        """
-}
 
 workflow guide_assignment {
     take:
@@ -37,9 +12,9 @@ workflow guide_assignment {
 
     if(assignment_method == "cleanser" || assignment_method == "umi-threshold"){
         def threshold = params.get("ASSIGNMENT_THRESHOLD", false)
-        assignments = cleanser(input_file, output_file, assignment_method, threshold)
+        assignments = guide_assignment_cleanser(input_file, output_file, assignment_method, threshold)
     } else if (assignment_method == "sceptre") {
-        assignments = sceptre(input_file, output_file)
+        assignments = guide_assignment_sceptre(input_file, output_file)
     }
 
     emit:

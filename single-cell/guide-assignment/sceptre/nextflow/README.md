@@ -16,11 +16,12 @@ There are no parameters to this Nextflow process.
 
 ## Outputs
 
-The process writes an output `MuData` file called `mudata_out.h5mu`. 
+The process writes an output `MuData` file called `mudata_out.h5mu`.
 
 ## Running the process
 
-To run this process, the workflow in `main.nf` can be invoked via 
+To run this process, the workflow in `main.nf` can be invoked via
+
 ```
-nextflow run main.nf --mudata_fp data/gasperini_guide_assignment_input.h5mu
+nextflow run main.nf --mudata_input data/gasperini_guide_assignment_input.h5mu --mudata_output mudata_out.h5mu
 ```
