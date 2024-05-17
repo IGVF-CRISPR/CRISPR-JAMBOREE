@@ -1,6 +1,6 @@
 
 process parsing_guide_metadata {
-        conda 'conda_envs/starsolo.yaml'
+        conda "${moduleDir}/conda_envs/starsolo.yaml"
         input: 
             val guide_metadata
         output:

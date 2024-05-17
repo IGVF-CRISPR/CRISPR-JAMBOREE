@@ -2,6 +2,8 @@
 # Runing  starSolo nextflow module to count guides
 This workflow will receive the whitelist, fastq and metadata and generate as output an AnnData (cells x guides) file using starSolo.
 
+
+
 ```bash
 #iNSTALL CONDA 
 conda update -n base conda -y 
@@ -9,15 +11,24 @@ conda install -n base conda-libmamba-solver -y
 conda config --set solver libmamba #this make conda very fast
 #install nextflow
 conda install bioconda::nextflow
+conda install bioconda::nf-test
 
 ```
 
 ```bash
 
 #unzip the  data sample
-tar -xvzf example_data/data.tar.gz
+cd CRISPR-JAMBOREE/single-cell/counting-guides/nextflow_pipeline/example_data  
+tar -xvzf -k data.tar.gz
 #This data is very small should be doable running in your desktop or small server
 ```
+
+```bash
+
+#make the bin files executable
+chmod +x bin/*    
+```
+
 
 ```bash
 
@@ -28,7 +39,7 @@ tar -xvzf example_data/data.tar.gz
 ```bash
 #Execute the nextflow from the project directory
 
-nextflow main.nf -config input.config -resume
+nextflow main.nf -config input.config -resume -with-conda
 
 
 ```
@@ -63,6 +74,39 @@ A directory with your data. The input.config file should point to the pathway of
 ### main.nf
 Your module workflow. You should import your processes here and structure the execution sequence
 
+
+
+# Developer
+```
+docker run -it --platform linux/amd64 -v /Users/lf588/Downloads/pipeline_guide_counting/CRISPR-JAMBOREE/:/mnt/CRISPR-JAMBOREE ubuntu /bin/bash  
+apt-get update  
+apt-get install wget  
+mkdir -p ~/miniconda3  
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh  
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3  
+rm -rf ~/miniconda3/miniconda.sh  
+
+source ~/.bashrc 
+
+conda update -n base conda -y 
+conda install -n base conda-libmamba-solver -y
+conda config --set solver libmamba #this make conda very fast
+#install nextflow
+conda install bioconda::nextflow
+
+
+```
+
+
+
+
+# colab dev
+```
+Not sync files automatically, maybe try to use the credentials
+https://colab.research.google.com/drive/1912kfEnMOtJ4Ya185nZqR0r-zCX4_Tlm?usp=sharing
+
+
+```
 
 
 
