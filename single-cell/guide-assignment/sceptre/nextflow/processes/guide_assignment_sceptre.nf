@@ -2,10 +2,10 @@ process guide_assignment_sceptre {
     container 'igvf/sceptre-igvf:v0.2'
 
     input:
-        path mudata_input
-        path mudata_output
+    path mudata_input
+    path mudata_output
     output:
-        path mudata_output
+    path mudata_output
 
     script:
     """
