@@ -1,4 +1,6 @@
 process guide_assignment_cleanser {
+    container 'igvf/cleanser:v0.1'
+
     input:
         path mudata_input
         path mudata_output
