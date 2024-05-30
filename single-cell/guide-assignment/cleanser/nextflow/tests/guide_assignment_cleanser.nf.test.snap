@@ -1,0 +1,68 @@
+{
+    "guide_assignment_cleanser on Gasperini data": {
+        "content": [
+            {
+                "stderr": [
+                    
+                ],
+                "errorReport": null,
+                "exitStatus": 0,
+                "out": {
+                    "0": [
+                        "mudata_out.h5mu:md5,aa1fb5f4074250c238b86000f4d3c501"
+                    ]
+                },
+                "failed": false,
+                "stdout": [
+                    
+                ],
+                "errorMessage": null,
+                "trace": {
+                    "tasksFailed": 0,
+                    "tasksCount": 1,
+                    "tasksSucceeded": 1
+                },
+                "name": "guide_assignment_cleanser",
+                "success": true
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-05-17T10:55:04.410916"
+    },
+    "guide_assignment_cleanser on Papalexi data": {
+        "content": [
+            {
+                "stderr": [
+                    
+                ],
+                "errorReport": null,
+                "exitStatus": 0,
+                "out": {
+                    "0": [
+                        "mudata_out.h5mu:md5,0b8fc6649f7ae28713787326591e726a"
+                    ]
+                },
+                "failed": false,
+                "stdout": [
+                    
+                ],
+                "errorMessage": null,
+                "trace": {
+                    "tasksFailed": 0,
+                    "tasksCount": 1,
+                    "tasksSucceeded": 1
+                },
+                "name": "guide_assignment_cleanser",
+                "success": true
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-05-17T10:55:13.567054"
+    }
+}
