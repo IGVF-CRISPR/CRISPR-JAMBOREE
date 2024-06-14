@@ -1,0 +1,18 @@
+nextflow_pipeline {
+
+    name "test pipeline"
+    script "main.nf"
+
+    test("test pipeline") {
+        when {
+            params {
+                rna_modality = "rna"
+                guide_modality = "grna"
+            }
+        }
+
+        then {
+            assert workflow.success
+        }
+    }
+}

@@ -1,0 +1,24 @@
+nextflow_process {
+
+    name "test pipeline"
+    script "processes/inference_perturbo.nf"
+    process "run_perturbo"
+
+    test("test run_perturbo process on gasperini pilot subset") {
+        when {
+            params {
+                rna_modality = "rna"
+                guide_modality = "grna"
+            }
+            process {
+                """
+                input[0] = file("$projectDir/data/gasperini_pilot_subset.h5mu")
+                """
+            }
+        }
+
+        then {
+            assert process.success
+        }
+    }
+}

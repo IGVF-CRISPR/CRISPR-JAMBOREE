@@ -12,6 +12,7 @@ single-cell/counting-guides/nextflow_pipeline/example_data/data
 single-cell/counting-guides/nextflow_pipeline/work
 single-cell/counting-guides/nextflow_pipeline/.nextflow
 *nextflow.log*
+.nextflow/
 
 
 # Distribution / packaging
