@@ -11,9 +11,11 @@ __pycache__/
 single-cell/counting-guides/nextflow_pipeline/example_data/data
 single-cell/counting-guides/nextflow_pipeline/work
 single-cell/counting-guides/nextflow_pipeline/.nextflow
+
+# files and directories automatically created by nextflow
 *nextflow.log*
 .nextflow/
-
+nextflow/work/
 
 # Distribution / packaging
 .Python
