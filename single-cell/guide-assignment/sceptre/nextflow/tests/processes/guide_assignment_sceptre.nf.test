@@ -12,6 +12,7 @@ nextflow_process {
             process {
                 """
                 input[0] = file("${projectDir}/data/gasperini_guide_assignment_input.h5mu")
+                input[1] = file("mudata_out.h5mu")
                 """
             }
         }
@@ -32,6 +33,7 @@ nextflow_process {
             process {
                 """
                 input[0] = file("${projectDir}/data/papalexi_guide_assignment_input.h5mu")
+                input[1] = file("mudata_out.h5mu")
                 """
             }
         }

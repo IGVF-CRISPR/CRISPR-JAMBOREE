@@ -1,0 +1,85 @@
+nextflow_process {
+    name "Test Process guide_assignment_cleanser"
+    script "guide_assignment_cleanser.nf"
+    process "guide_assignment_cleanser"
+
+    test("Cleanser guide assignment on Gasperini data") {
+        when {
+            process {
+                """
+                input[0] = file("${projectDir}/data/gasperini_guide_assignment_input_minimal.h5mu")
+                input[1] = file("mudata_out.h5mu")
+                input[2] = "cleanser"
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            with(process.out) {
+                assert mudata_output != null
+            }
+        }
+    }
+
+    test("Threshold guide assignment on Gasperini data") {
+        when {
+            process {
+                """
+                input[0] = file("${projectDir}/data/gasperini_guide_assignment_input_minimal.h5mu")
+                input[1] = file("mudata_out.h5mu")
+                input[2] = "umi-threshold"
+                input[3] = 5
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            with(process.out) {
+                assert mudata_output != null
+            }
+        }
+    }
+
+    test("Cleanser guide assignment on Papalexi data") {
+        when {
+            process {
+                """
+                input[0] = file("${projectDir}/data/papalexi_guide_assignment_input.h5mu")
+                input[1] = file("mudata_out.h5mu")
+                input[2] = "cleanser"
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            with(process.out) {
+                assert mudata_output != null
+            }
+        }
+    }
+
+    test("Threshold guide assignment on Papalexi data") {
+        when {
+            process {
+                """
+                input[0] = file("${projectDir}/data/papalexi_guide_assignment_input.h5mu")
+                input[1] = file("mudata_out.h5mu")
+                input[2] = "umi-threshold"
+                input[3] = 5
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            with(process.out) {
+                assert mudata_output != null
+            }
+        }
+    }
+}
