@@ -1,15 +1,15 @@
 nextflow_process {
-    name "Test Process guide_assignment/cleanser"
+    name "Test Process guide_assignment/threshold"
     script "guide_assignment.nf"
-    process "cleanser"
+    process "threshold"
 
-    test("Cleanser guide assignment on Gasperini data") {
+    test("Threshold guide assignment on Gasperini data") {
         when {
             process {
                 """
                 input[0] = file("${projectDir}/data/gasperini_guide_assignment_input_minimal.h5mu")
                 input[1] = file("mudata_out.h5mu")
-                input[2] = false
+                input[2] = 5
                 """
             }
         }
@@ -22,13 +22,15 @@ nextflow_process {
         }
     }
 
-    test("Cleanser guide assignment on Papalexi data") {
+
+
+    test("Threshold guide assignment on Papalexi data") {
         when {
             process {
                 """
                 input[0] = file("${projectDir}/data/papalexi_guide_assignment_input.h5mu")
                 input[1] = file("mudata_out.h5mu")
-                input[2] = false
+                input[2] = 5
                 """
             }
         }

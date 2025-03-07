@@ -9,4 +9,4 @@ WORKDIR /cleanser
 
 COPY . .
 
-RUN pip install mudata==0.2.3; pip install "git+https://github.com/siyansusan/CLEANSER.git@4f3c331058d2e6cc237666523f29b75c768443d4"; install_cmdstan
+RUN pip install "git+https://github.com/Gersbachlab-Bioinformatics/CLEANSER.git@197ebea49ae7ec02e45cbea2b3420e9b26fc4a81"; install_cmdstan
