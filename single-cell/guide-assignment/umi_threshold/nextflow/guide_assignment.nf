@@ -1,4 +1,4 @@
-process cleanser {
+process threshold {
     container 'igvf/cleanser:v1.2'
 
     input:
@@ -11,6 +11,6 @@ process cleanser {
     script:
         def thresh_opt = threshold ? "-t ${threshold}" : ""
         """
-            cleanser -i ${mudata_input} --posteriors-output ${mudata_output} --modality guide --capture-method capture_method --output-layer guide_assignment ${thresh_opt}
+            python ${moduleDir}/bin/threshold_assignment.py  -i ${mudata_input} -o ${mudata_output} ${thresh_opt}
         """
 }
