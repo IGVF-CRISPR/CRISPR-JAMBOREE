@@ -1,4 +1,5 @@
-include { guide_assignment_cleanser } from '../cleanser/nextflow/guide_assignment_cleanser.nf'
+include { cleanser } from '../cleanser/nextflow/guide_assignment.nf'
+include { threshold } from '../umi_threshold/nextflow/guide_assignment.nf'
 include { guide_assignment_sceptre } from '../sceptre/nextflow/processes/guide_assignment_sceptre.nf'
 
 
@@ -10,9 +11,12 @@ workflow guide_assignment {
     main:
     def assignment_method = params.get("ASSIGNMENT_METHOD", "cleanser").toLowerCase()
 
-    if(assignment_method == "cleanser" || assignment_method == "umi-threshold"){
-        def threshold = params.get("ASSIGNMENT_THRESHOLD", false)
-        assignments = guide_assignment_cleanser(input_file, output_file, assignment_method, threshold)
+    if(assignment_method == "cleanser"){
+        def threshold_value = params.get("ASSIGNMENT_THRESHOLD", false)
+        assignments = cleanser(input_file, output_file, threshold_value)
+    } else if (assignment_method == "umi-threshold") {
+        def threshold_value = params.get("ASSIGNMENT_THRESHOLD", 5)
+        assignments = threshold(input_file, output_file, threshold_value)
     } else if (assignment_method == "sceptre") {
         assignments = guide_assignment_sceptre(input_file, output_file)
     }

@@ -1,4 +1,4 @@
-include { cleanser } from './guide_assignment.nf'
+include { threshold } from './guide_assignment.nf'
 
 
 workflow guide_assignment {
@@ -8,9 +8,9 @@ workflow guide_assignment {
 
     main:
     def assignment_method = params.get("ASSIGNMENT_METHOD", "cleanser").toLowerCase()
-    def threshold_value = params.get("ASSIGNMENT_THRESHOLD", false)
+    def threshold_value = params.get("ASSIGNMENT_THRESHOLD", 5)
 
-    assignments = cleanser(input_file, output_file, threshold_value)
+    assignments = threshold(input_file, output_file, threshold_value)
 
     emit:
     assignments
